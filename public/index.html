@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp Bot Pairing</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-4 text-center">Deploy Your WhatsApp Bot</h1>
+    <form action="/api/pair" method="POST" class="space-y-4">
+      <input type="text" name="phone" placeholder="Enter your WhatsApp number" required class="w-full p-2 border rounded" />
+      <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+        Get Pairing Code
+      </button>
+    </form>
+  </div>
+  <div class="mt-6 text-center">
+    <form action="/api/upload" method="POST" enctype="multipart/form-data">
+      <input type="file" name="script" class="block mx-auto mb-2" required />
+      <input type="password" name="adminKey" placeholder="Admin Key" class="w-full max-w-xs p-2 border rounded mb-2" required />
+      <button class="bg-blue-500 text-white px-4 py-2 rounded">Upload Script (Admin Only)</button>
+    </form>
+  </div>
+</body>
+</html>
