@@ -1,27 +1,49 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WhatsApp Bot Pairing</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>WhatsApp Bot Deployer</title>
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
-  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-4 text-center">Deploy Your WhatsApp Bot</h1>
-    <form action="/api/pair" method="POST" class="space-y-4">
-      <input type="text" name="phone" placeholder="Enter your WhatsApp number" required class="w-full p-2 border rounded" />
-      <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-        Get Pairing Code
-      </button>
-    </form>
-  </div>
-  <div class="mt-6 text-center">
-    <form action="/api/upload" method="POST" enctype="multipart/form-data">
-      <input type="file" name="script" class="block mx-auto mb-2" required />
-      <input type="password" name="adminKey" placeholder="Admin Key" class="w-full max-w-xs p-2 border rounded mb-2" required />
-      <button class="bg-blue-500 text-white px-4 py-2 rounded">Upload Script (Admin Only)</button>
-    </form>
-  </div>
+<body style="font-family: sans-serif; padding: 2em; max-width: 600px; margin: auto;">
+  <h2>Deploy WhatsApp Bot</h2>
+  <form id="pairForm">
+    <input type="text" name="phone" placeholder="Enter WhatsApp number" required />
+    <button type="submit">Get Pairing Code</button>
+  </form>
+  <pre id="output" style="margin-top:1em; background:#eee; padding:1em;"></pre>
+
+  <h3>Admin Upload</h3>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="script" required />
+    <input type="password" name="key" placeholder="Admin Key" required />
+    <button type="submit">Upload Script</button>
+  </form>
+
+  <script>
+    const backend = "https://lordeagle.eaglegnick.me/server/3773552d";
+
+    document.getElementById('pairForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const phone = e.target.phone.value;
+      const res = await fetch(backend + '/pair', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+      const data = await res.json();
+      document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+    };
+
+    document.getElementById('uploadForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch(backend + '/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const msg = await res.text();
+      alert(msg);
+    };
+  </script>
 </body>
 </html>
